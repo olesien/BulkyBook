@@ -100,7 +100,8 @@ namespace BulkyBookWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(Category obj)
         {
-            Console.WriteLine(obj.Id);
+            if (obj.Id == 0) { return NotFound(); }
+
             _db.Categories.Attach(obj);
             var category = _db.Categories.Remove(obj);
             _db.SaveChanges();
