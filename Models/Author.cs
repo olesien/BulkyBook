@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BulkyBookWeb.Models
 {
-    public class Category
+    public class Author
     {
-        public Category()
+        public Author()
         {
             this.Books = new List<Book>();
         }
