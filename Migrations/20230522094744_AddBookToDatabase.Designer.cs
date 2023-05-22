@@ -3,6 +3,7 @@ using System;
 using BulkyBookWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulkyBookWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230522094744_AddBookToDatabase")]
+    partial class AddBookToDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,9 +28,6 @@ namespace BulkyBookWeb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime(6)");
 
@@ -37,8 +37,6 @@ namespace BulkyBookWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Books");
                 });
 
@@ -46,6 +44,9 @@ namespace BulkyBookWeb.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BookId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDateTime")
@@ -60,23 +61,21 @@ namespace BulkyBookWeb.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BookId");
+
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("BulkyBookWeb.Models.Book", b =>
-                {
-                    b.HasOne("BulkyBookWeb.Models.Category", "Category")
-                        .WithMany("Books")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("BulkyBookWeb.Models.Category", b =>
                 {
-                    b.Navigation("Books");
+                    b.HasOne("BulkyBookWeb.Models.Book", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("BookId");
+                });
+
+            modelBuilder.Entity("BulkyBookWeb.Models.Book", b =>
+                {
+                    b.Navigation("Categories");
                 });
 #pragma warning restore 612, 618
         }

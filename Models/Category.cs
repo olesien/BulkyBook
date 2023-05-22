@@ -5,6 +5,10 @@ namespace BulkyBookWeb.Models
 {
     public class Category
     {
+        public Category()
+        {
+            this.Books = new List<Book>();
+        }
         [Key]
         public int Id { get; set; }
         [Required]
@@ -17,5 +21,7 @@ namespace BulkyBookWeb.Models
 
 
         public DateTime CreatedDateTime { get; set; } = DateTime.Now;
+
+        public virtual ICollection<Book> Books { get; set; }
     }
 }
