@@ -557,3 +557,5 @@ C:\Users\olesi\Desktop\Programmering\BulkyBook\BulkyBookWeb\bin\Debug\net6.0\run
 C:\Users\olesi\Desktop\Programmering\BulkyBook\BulkyBookWeb\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\olesi\Desktop\Programmering\BulkyBook\BulkyBookWeb\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\olesi\Desktop\Programmering\BulkyBook\BulkyBookWeb\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\olesi\Desktop\Programmering\BulkyBook\BulkyBookWeb\bin\Debug\net6.0\MySqlConnector.dll
+C:\Users\olesi\Desktop\Programmering\BulkyBook\BulkyBookWeb\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll

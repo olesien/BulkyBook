@@ -10,18 +10,17 @@ namespace BulkyBookWeb.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            //Crashes MySQL
             //migrationBuilder.DropForeignKey(
             //    name: "FK_Categories_Books_BookId",
             //    table: "Categories");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Categories_BookId",
-                table: "Categories");
+            //migrationBuilder.DropIndex(
+            //    name: "IX_Categories_BookId",
+            //    table: "Categories");
 
-            migrationBuilder.DropColumn(
-                name: "BookId",
-                table: "Categories");
+            //migrationBuilder.DropColumn(
+            //    name: "BookId",
+            //    table: "Categories");
 
             migrationBuilder.AddColumn<int>(
                 name: "CategoryId",
@@ -47,17 +46,17 @@ namespace BulkyBookWeb.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Books_Categories_CategoryId",
-                table: "Books");
+            //migrationBuilder.DropForeignKey(
+            //    name: "FK_Books_Categories_CategoryId",
+            //    table: "Books");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Books_CategoryId",
-                table: "Books");
+            //migrationBuilder.DropIndex(
+            //    name: "IX_Books_CategoryId",
+            //    table: "Books");
 
-            migrationBuilder.DropColumn(
-                name: "CategoryId",
-                table: "Books");
+            //migrationBuilder.DropColumn(
+            //    name: "CategoryId",
+            //    table: "Books");
 
             migrationBuilder.AddColumn<int>(
                 name: "BookId",

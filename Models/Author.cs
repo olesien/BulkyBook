@@ -7,7 +7,7 @@ namespace BulkyBookWeb.Models
     {
         public Author()
         {
-            this.Books = new List<Book>();
+            this.Books = new List<BookAuthors>();
         }
         [Key]
         public int Id { get; set; }
@@ -22,6 +22,8 @@ namespace BulkyBookWeb.Models
 
         public DateTime CreatedDateTime { get; set; } = DateTime.Now;
 
-        public ICollection<Book> Books { get; set; }
+        public ICollection<BookAuthors> Books { get; set; }
+
+
     }
 }

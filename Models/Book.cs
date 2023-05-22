@@ -9,7 +9,9 @@ namespace BulkyBookWeb.Models
         public Book()
         {
             this.Category = Category;
+            this.Authors = new List<BookAuthors>();
         }
+
         [Key]
         public int Id { get; set; }
         [Required]
@@ -22,8 +24,6 @@ namespace BulkyBookWeb.Models
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
 
-        [ForeignKey("Author")]
-        public int AuthorId { get; set; }
-        public virtual Author Author { get; set; }
+        public ICollection<BookAuthors> Authors { get; set; }
     }
 }
