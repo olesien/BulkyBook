@@ -5,18 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBookWeb.Controllers
 {
-    public class BookController : Controller
+    public class AuthorController : Controller
     {
         private readonly ApplicationDbContext _db;
 
-        public BookController(ApplicationDbContext db)
+        public AuthorController(ApplicationDbContext db)
         {
             _db = db;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Book> objBookList = _db.Books.Include(x => x.Category).ToList();
+            IEnumerable<Author> objBookList = _db.Authors.ToList();
             return View(objBookList);
         }
 

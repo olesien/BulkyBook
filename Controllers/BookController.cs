@@ -1,21 +1,26 @@
 ﻿using BulkyBookWeb.Data;
 using BulkyBookWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace BulkyAuthorWeb.Controllers
+namespace BulkyBookWeb.Controllers
 {
-    public class AuthorController : Controller
+    public class BookController : Controller
     {
         private readonly ApplicationDbContext _db;
 
-        public AuthorController(ApplicationDbContext db)
+        public BookController(ApplicationDbContext db)
         {
             _db = db;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Author> objBookList = _db.Authors.ToList();
+            IEnumerable<Book> objBookList = _db.Books
+           .Include(x => x.Category)
+           .Include(x => x.Authors)
+           .ThenInclude(a => a.Author)
+           .ToList();
             return View(objBookList);
         }
 
