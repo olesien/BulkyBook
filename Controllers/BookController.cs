@@ -1,6 +1,7 @@
 ﻿using BulkyBookWeb.Data;
 using BulkyBookWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBookWeb.Controllers
 {
@@ -15,7 +16,7 @@ namespace BulkyBookWeb.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Book> objBookList = _db.Books;
+            IEnumerable<Book> objBookList = _db.Books.Include(x => x.Category).ToList();
             return View(objBookList);
         }
 

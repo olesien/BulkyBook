@@ -6,6 +6,10 @@ namespace BulkyBookWeb.Models
 {
     public class Book
     {
+        public Book()
+        {
+            this.Category = Category;
+        }
         [Key]
         public int Id { get; set; }
         [Required]
