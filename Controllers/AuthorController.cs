@@ -46,69 +46,69 @@ namespace BulkyBookWeb.Controllers
             return View(obj);
         }
 
-        //    //GET
-        //    public IActionResult Edit(int? id)
-        //    {
-        //        if (id == null || id == 0)
-        //        {
-        //            return NotFound();
+        //GET
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
 
-        //        }
-        //        var categoryFromDb = _db.Categories.Find(id);
-        //        if (categoryFromDb == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        return View(categoryFromDb);
-        //    }
+            }
+            var authorFromDb = _db.Authors.Find(id);
+            if (authorFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(authorFromDb);
+        }
 
-        //    //POST
-        //    [HttpPost]
-        //    [ValidateAntiForgeryToken]
-        //    public IActionResult Edit(Category obj)
-        //    {
-        //        if (obj.Name == obj.DisplayOrder.ToString())
-        //        {
-        //            ModelState.AddModelError("Name", "The DisplayOrder cannot exactly match the name.");
-        //        }
-        //        if (ModelState.IsValid)
-        //        {
-        //            _db.Categories.Update(obj);
-        //            _db.SaveChanges();
-        //            TempData["success"] = "Category edited successfully!";
-        //            return RedirectToAction("Index");
-        //        }
-        //        return View(obj);
-        //    }
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Author obj)
+        {
+            if (obj.Name == obj.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("Name", "The DisplayOrder cannot exactly match the name.");
+            }
+            if (ModelState.IsValid)
+            {
+                _db.Authors.Update(obj);
+                _db.SaveChanges();
+                TempData["success"] = "Author edited successfully!";
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+        }
 
-        //    //GET
-        //    public IActionResult Delete(int? id)
-        //    {
-        //        if (id == null || id == 0)
-        //        {
-        //            return NotFound();
+        //GET
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
 
-        //        }
-        //        var categoryFromDb = _db.Categories.Find(id);
-        //        if (categoryFromDb == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        return View(categoryFromDb);
-        //    }
+            }
+            var authorFromDb = _db.Authors.Find(id);
+            if (authorFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(authorFromDb);
+        }
 
-        //    //DELETE
-        //    [HttpPost]
-        //    [ValidateAntiForgeryToken]
-        //    public IActionResult Delete(Category obj)
-        //    {
-        //        if (obj.Id == 0) { return NotFound(); }
+        //DELETE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(Author obj)
+        {
+            if (obj.Id == 0) { return NotFound(); }
 
-        //        _db.Categories.Attach(obj);
-        //        var category = _db.Categories.Remove(obj);
-        //        _db.SaveChanges();
-        //        TempData["success"] = "Category removed successfully";
-        //        return RedirectToAction("Index");
-        //    }
+            _db.Authors.Attach(obj);
+            _db.Authors.Remove(obj);
+            _db.SaveChanges();
+            TempData["success"] = "Author removed successfully";
+            return RedirectToAction("Index");
+        }
     }
 }
