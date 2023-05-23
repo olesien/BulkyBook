@@ -25,30 +25,38 @@ namespace BulkyBookWeb.Controllers
         }
 
         ////GET
-        //public IActionResult Create()
-        //{
+        public IActionResult Create()
+        {
+            IEnumerable<Category> objCategoryList = _db.Categories;
+            IEnumerable<Author> objAuthorList = _db.Authors;
+            ViewData["Categories"] = objCategoryList;
+            ViewData["Authors"] = objAuthorList;
+            return View();
+        }
 
-        //    return View();
-        //}
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Book obj)
+        {
+            ModelState.Remove("Category");
+            var categoryFromDb = _db.Categories.Find(obj.CategoryId);
+            if (categoryFromDb == null)
+            {
+                ModelState.AddModelError("CategoryId", "This ID does not exist");
+            }
 
-        //    //POST
-        //    [HttpPost]
-        //    [ValidateAntiForgeryToken]
-        //    public IActionResult Create(Category obj)
-        //    {
-        //        if (obj.Name == obj.DisplayOrder.ToString())
-        //        {
-        //            ModelState.AddModelError("Name", "The DisplayOrder cannot exactly match the name.");
-        //        }
-        //        if (ModelState.IsValid)
-        //        {
-        //            _db.Categories.Add(obj);
-        //            _db.SaveChanges();
-        //            TempData["success"] = "Category created successfully!";
-        //            return RedirectToAction("Index");
-        //        }
-        //        return View(obj);
-        //    }
+            if (ModelState.IsValid)
+            {
+                _db.Books.Add(obj);
+                _db.SaveChanges();
+                TempData["success"] = "Book created successfully!";
+                return RedirectToAction("Index");
+            }
+            IEnumerable<Category> objCategoryList = _db.Categories;
+            ViewData["Categories"] = objCategoryList;
+            return View(obj);
+        }
 
         //    //GET
         //    public IActionResult Edit(int? id)
