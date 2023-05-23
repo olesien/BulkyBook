@@ -31,11 +31,11 @@
         </div>
         <div class="mb-3">
 
-            <select multiple="multiple" class="form-select" aria-label="Select authors" asp-for="Authors">
-                <option selected>Select Authors</option>
+            <label asp-for="Authors">Select author(s)</label>
+            <select class="form-select form-multi-select" multiple="multiple" aria-label="Select authors" asp-for="Authors">
                 @foreach (Author author in authors)
                 {
-                    <option value="@author.Id">@author.Name</option>
+                    <option value="@author.Id" id="select-@author.Id">@author.Name</option>
                 }
             </select>
             <span asp-validation-for="CategoryId" class="text-danger"></span>
