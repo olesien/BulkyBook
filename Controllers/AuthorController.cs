@@ -20,31 +20,31 @@ namespace BulkyBookWeb.Controllers
             return View(objBookList);
         }
 
-        ////GET
-        //public IActionResult Create()
-        //{
+        //GET
+        public IActionResult Create()
+        {
 
-        //    return View();
-        //}
+            return View();
+        }
 
-        //    //POST
-        //    [HttpPost]
-        //    [ValidateAntiForgeryToken]
-        //    public IActionResult Create(Category obj)
-        //    {
-        //        if (obj.Name == obj.DisplayOrder.ToString())
-        //        {
-        //            ModelState.AddModelError("Name", "The DisplayOrder cannot exactly match the name.");
-        //        }
-        //        if (ModelState.IsValid)
-        //        {
-        //            _db.Categories.Add(obj);
-        //            _db.SaveChanges();
-        //            TempData["success"] = "Category created successfully!";
-        //            return RedirectToAction("Index");
-        //        }
-        //        return View(obj);
-        //    }
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Author obj)
+        {
+            if (obj.Name == obj.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("Name", "The DisplayOrder cannot exactly match the name.");
+            }
+            if (ModelState.IsValid)
+            {
+                _db.Authors.Add(obj);
+                _db.SaveChanges();
+                TempData["success"] = "Author created successfully!";
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+        }
 
         //    //GET
         //    public IActionResult Edit(int? id)
