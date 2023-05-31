@@ -61,11 +61,12 @@ namespace BulkyBookWeb.Controllers
 
                 int bookId = obj.Id;
 
-                List<BookAuthors> bookAuthorMappings = AuthorIDs.Select(authorId => new
+                List<BookAuthors> bookAuthorMappings = AuthorIDs.Select(authorId => new BookAuthors
                 {
-                    BookId = bookId, 
+                    BookId = bookId,
                     AuthorId = authorId
-                }).Cast<BookAuthors>().ToList();
+                }).ToList();
+
                 _db.BookAuthors.AddRange(bookAuthorMappings);
                 _db.SaveChanges();
                 TempData["success"] = "Book created successfully!";
