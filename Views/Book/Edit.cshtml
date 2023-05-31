@@ -9,7 +9,7 @@
 <form method="post">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Create Book</h2>
+            <h2 class="text-primary">Edit Book</h2>
             <hr />
         </div>
         <div asp-validation-summary="All"></div>
@@ -41,7 +41,7 @@
             <span asp-validation-for="SelectedAuthors" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
         <a asp-controller="Book" asp-action="Index" class="btn btn-secondary" style="width:150px">Back to list</a>
     </div>
 </form>

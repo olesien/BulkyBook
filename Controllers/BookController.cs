@@ -77,69 +77,119 @@ namespace BulkyBookWeb.Controllers
             return View(obj);
         }
 
-        //    //GET
-        //    public IActionResult Edit(int? id)
-        //    {
-        //        if (id == null || id == 0)
-        //        {
-        //            return NotFound();
+        //GET
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
 
-        //        }
-        //        var categoryFromDb = _db.Categories.Find(id);
-        //        if (categoryFromDb == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        return View(categoryFromDb);
-        //    }
+            }
 
-        //    //POST
-        //    [HttpPost]
-        //    [ValidateAntiForgeryToken]
-        //    public IActionResult Edit(Category obj)
-        //    {
-        //        if (obj.Name == obj.DisplayOrder.ToString())
-        //        {
-        //            ModelState.AddModelError("Name", "The DisplayOrder cannot exactly match the name.");
-        //        }
-        //        if (ModelState.IsValid)
-        //        {
-        //            _db.Categories.Update(obj);
-        //            _db.SaveChanges();
-        //            TempData["success"] = "Category edited successfully!";
-        //            return RedirectToAction("Index");
-        //        }
-        //        return View(obj);
-        //    }
+            var bookFromDb = _db.Books.Include(x => x.Category)
+            .Include(x => x.Authors)
+            .ThenInclude(a => a.Author).FirstOrDefault(book => book.Id == id);
+            if (bookFromDb == null)
+            {
+                return NotFound();
+            }
+            bookFromDb.SelectedAuthors = bookFromDb.Authors.Select(author => author.Id).ToArray();
+            IEnumerable<Category> objCategoryList = _db.Categories;
+            IEnumerable<Author> objAuthorList = _db.Authors;
+            ViewData["Categories"] = objCategoryList;
+            ViewData["Authors"] = objAuthorList;
+            return View(bookFromDb);
+        }
 
-        //    //GET
-        //    public IActionResult Delete(int? id)
-        //    {
-        //        if (id == null || id == 0)
-        //        {
-        //            return NotFound();
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Book obj)
+        {
+            ModelState.Remove("Category");
+            var categoryFromDb = _db.Categories.Find(obj.CategoryId);
 
-        //        }
-        //        var categoryFromDb = _db.Categories.Find(id);
-        //        if (categoryFromDb == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        return View(categoryFromDb);
-        //    }
+            if (categoryFromDb == null)
+            {
+                ModelState.AddModelError("CategoryId", "This ID does not exist");
+            }
 
-        //    //DELETE
-        //    [HttpPost]
-        //    [ValidateAntiForgeryToken]
-        //    public IActionResult Delete(Category obj)
-        //    {
-        //        if (obj.Id == 0) { return NotFound(); }
+            if (ModelState.IsValid)
+            {
+                var AuthorIDs = obj.SelectedAuthors;
+                ModelState.Remove("AuthorIDs");
+                _db.Books.Update(obj);
+                _db.SaveChanges();
 
-        //        _db.Categories.Attach(obj);
-        //        var category = _db.Categories.Remove(obj);
-        //        _db.SaveChanges();
-        //        TempData["success"] = "Category removed successfully";
-        //        return RedirectToAction("Index");
-        //    }
+                int bookId = obj.Id;
+
+                List<BookAuthors> bookAuthorMappings = AuthorIDs.Select(authorId => new BookAuthors
+                {
+                    BookId = bookId,
+                    AuthorId = authorId
+                }).ToList();
+
+                //Get current bookauthors
+                List<BookAuthors> existingBookAuthors = _db.BookAuthors.ToList();
+
+                //Find if any are in bookauthors but not in the mapping, remove
+                List<BookAuthors> authorsToRemove = existingBookAuthors
+    .Where(existingAuthor => !bookAuthorMappings.Any(mapping => mapping.AuthorId == existingAuthor.AuthorId))
+    .ToList();
+                _db.BookAuthors.RemoveRange(authorsToRemove);
+
+                //FInd if any are in the mapping, but not in bookauthors, add
+                List<BookAuthors> authorsToAdd = bookAuthorMappings
+    .Where(mapping => !existingBookAuthors.Any(existingAuthor => existingAuthor.AuthorId == mapping.AuthorId))
+    .ToList();
+                _db.BookAuthors.AddRange(authorsToAdd);
+
+                //Save db changes
+                _db.SaveChanges();
+                TempData["success"] = "Book updated successfully!";
+                return RedirectToAction("Index");
+            }
+            IEnumerable<Category> objCategoryList = _db.Categories;
+            ViewData["Categories"] = objCategoryList;
+            return View(obj); ;
+        }
+
+        //GET
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+
+            }
+
+            var bookFromDb = _db.Books.Include(x => x.Category)
+            .Include(x => x.Authors)
+            .ThenInclude(a => a.Author).FirstOrDefault(book => book.Id == id);
+            if (bookFromDb == null)
+            {
+                return NotFound();
+            }
+            bookFromDb.SelectedAuthors = bookFromDb.Authors.Select(author => author.Id).ToArray();
+            IEnumerable<Category> objCategoryList = _db.Categories;
+            IEnumerable<Author> objAuthorList = _db.Authors;
+            ViewData["Categories"] = objCategoryList;
+            ViewData["Authors"] = objAuthorList;
+            return View(bookFromDb);
+        }
+
+        //DELETE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(Book obj)
+        {
+            if (obj.Id == 0) { return NotFound(); }
+
+            _db.Books.Attach(obj);
+            var book = _db.Books.Remove(obj);
+            _db.SaveChanges();
+            TempData["success"] = "Book removed successfully";
+            return RedirectToAction("Index");
+        }
     }
 }
