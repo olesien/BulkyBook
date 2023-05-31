@@ -2,6 +2,9 @@
 using BulkyBookWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
+using System.Linq;
+using System.Net;
 
 namespace BulkyBookWeb.Controllers
 {
@@ -21,6 +24,8 @@ namespace BulkyBookWeb.Controllers
            .Include(x => x.Authors)
            .ThenInclude(a => a.Author)
            .ToList();
+
+
             return View(objBookList);
         }
 
@@ -41,6 +46,7 @@ namespace BulkyBookWeb.Controllers
         {
             ModelState.Remove("Category");
             var categoryFromDb = _db.Categories.Find(obj.CategoryId);
+
             if (categoryFromDb == null)
             {
                 ModelState.AddModelError("CategoryId", "This ID does not exist");
@@ -48,7 +54,19 @@ namespace BulkyBookWeb.Controllers
 
             if (ModelState.IsValid)
             {
+                var AuthorIDs = obj.SelectedAuthors;
+                ModelState.Remove("AuthorIDs");
                 _db.Books.Add(obj);
+                _db.SaveChanges();
+
+                int bookId = obj.Id;
+
+                List<BookAuthors> bookAuthorMappings = AuthorIDs.Select(authorId => new
+                {
+                    BookId = bookId, 
+                    AuthorId = authorId
+                }).Cast<BookAuthors>().ToList();
+                _db.BookAuthors.AddRange(bookAuthorMappings);
                 _db.SaveChanges();
                 TempData["success"] = "Book created successfully!";
                 return RedirectToAction("Index");

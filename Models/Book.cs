@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,6 +7,10 @@ namespace BulkyBookWeb.Models
 {
     public class Book
     {
+
+        [BindProperty]
+        [NotMapped]
+        public int[] SelectedAuthors { get; set; }
         public Book()
         {
             this.Category = Category;
@@ -25,5 +30,6 @@ namespace BulkyBookWeb.Models
         public virtual Category Category { get; set; }
 
         public ICollection<BookAuthors> Authors { get; set; }
+
     }
 }
